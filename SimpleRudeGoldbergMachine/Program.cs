@@ -1,12 +1,15 @@
-﻿using System;
-
-namespace SimpleRudeGoldbergMachine
+﻿namespace SimpleRudeGoldbergMachine
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var ball = new Ball();
+            var bell = new Bell();
+
+            ball.Collision += bell.BellCollided;
+
+            ball.Roll();
         }
     }
 }
