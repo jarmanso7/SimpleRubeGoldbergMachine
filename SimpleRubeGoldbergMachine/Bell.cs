@@ -4,7 +4,7 @@ namespace SimpleRudeGoldbergMachine
 {
     public class Bell
     {
-        public void BellCollided(object sender, EventArgs e)
+        public void Collided(object sender, EventArgs e)
         {
             var typeOfObject = sender.GetType().Name;
             Console.WriteLine($"A {typeOfObject} has collided with the bell.");
