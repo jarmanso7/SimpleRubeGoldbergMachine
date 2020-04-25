@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleRudeGoldbergMachine
+namespace SimpleRubeGoldbergMachine
 {
     public class Bell
     {
