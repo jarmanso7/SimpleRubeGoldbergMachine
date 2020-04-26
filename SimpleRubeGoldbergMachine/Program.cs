@@ -37,8 +37,8 @@
             //when each token falls, it triggers the fall of the next one.
             for (var i = 0; i < 4; i++)
             {
-                leftRowOfDominoes[0].Fall += leftRowOfDominoes[i + 1].Collided;
-                rightRowOfDominoes[0].Fall += rightRowOfDominoes[i + 1].Collided;
+                leftRowOfDominoes[i].Fall += leftRowOfDominoes[i + 1].Collided;
+                rightRowOfDominoes[i].Fall += rightRowOfDominoes[i + 1].Collided;
             }
 
             //Set the bell right after the last domino token of the left row
