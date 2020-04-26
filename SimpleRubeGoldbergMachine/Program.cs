@@ -1,4 +1,6 @@
-﻿namespace SimpleRubeGoldbergMachine
+﻿using System;
+
+namespace SimpleRubeGoldbergMachine
 {
     public class Program
     {
