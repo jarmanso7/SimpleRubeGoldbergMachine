@@ -17,14 +17,20 @@ namespace SimpleRubeGoldbergMachine
 
         public void Collided(object sender, EventArgs e)
         {
-            var objectType = sender.GetType().Name;
-            Console.WriteLine($"A {objectType} has bumped into the domino token.");
-            Console.WriteLine("The token falls!");
+            var thread = new Thread(() =>
+            {
+                var objectType = sender.GetType().Name;
+                Console.WriteLine($"A {objectType} has bumped into the domino token.");
+                Console.WriteLine("The token falls!");
 
-            Thread.Sleep(1000);
+                Thread.Sleep(1000);
 
-            //On falling, the domino token collides with the next token
-            this.OnFalling(EventArgs.Empty);
+                //On falling, the domino token collides with the next token
+                this.OnFalling(EventArgs.Empty);
+            });
+
+            thread.IsBackground = false;
+            thread.Start();
         }
         
         private void OnFalling(EventArgs e)
