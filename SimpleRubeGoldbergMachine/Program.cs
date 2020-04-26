@@ -1,15 +1,43 @@
 ﻿using System;
+using System.Threading;
 
 namespace SimpleRubeGoldbergMachine
 {
+    public class Finger { }
+
+    public class DominoToken
+    {
+        public event EventHandler Fall;
+
+        public void KickOff()
+        {
+            //Collides with your finger and kicks off the chain reaction
+            this.Collided(new Finger(), EventArgs.Empty);
+        }
+
+        public void Collided(object sender, EventArgs e)
+        {
+            var objectType = sender.GetType().Name;
+            Console.WriteLine($"A {objectType} has bumped into the domino token.");
+            Console.WriteLine("The token falls!");
+
+            Thread.Sleep(1000);
+
+            //On falling, the domino token collides with the next token
+            this.OnFalling(EventArgs.Empty);
+        }
+        
+        private void OnFalling(EventArgs e)
+        {
+            Fall?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     public class Program
     {
         private static void Main(string[] args)
         {
-            //Setup the elements of the RubeGoldbergMachine
-            var ball = new Ball();
-
-            var leftRowOfDominoes = new[]
+            var rowOfDominoes = new[]
             {
                 new DominoToken(),
                 new DominoToken(),
@@ -18,39 +46,14 @@ namespace SimpleRubeGoldbergMachine
                 new DominoToken()
             };
 
-            var leftBell = new Bell();
-
-            var rightRowOfDominoes = new[]
-            {
-                new DominoToken(),
-                new DominoToken(),
-                new DominoToken(),
-                new DominoToken(),
-                new DominoToken()
-            };
-
-            var rightBell = new Bell();
-
-            //target the first domino token of each row with the same ball
-            ball.Collision += leftRowOfDominoes[0].Collided;
-            ball.Collision += rightRowOfDominoes[0].Collided;
-
-            //Set the dominoes of each row so that
-            //when each token falls, it triggers the fall of the next one.
+            //Attach the Collided delegate of each domino Token to the Fall event of the previous Token
             for (var i = 0; i < 4; i++)
             {
-                leftRowOfDominoes[0].Fall += leftRowOfDominoes[i + 1].Collided;
-                rightRowOfDominoes[0].Fall += rightRowOfDominoes[i + 1].Collided;
+                rowOfDominoes[i].Fall += rowOfDominoes[i + 1].Collided;
             }
 
-            //Set the bell right after the last domino token of the left row
-            leftRowOfDominoes[4].Fall += leftBell.Collided;
-
-            //Set the bell right after the last domino token of the right row
-            rightRowOfDominoes[4].Fall += rightBell.Collided;
-
             //Kick-off
-            ball.Roll();
+            rowOfDominoes[0].KickOff();
         }
     }
 }
